@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- The report table has a fixed column order: Item, Debit, Credit, Amount,
+         Comparison. The Initial Balance column goes just before Amount, so the
+         opening position reads to the left of the movements it precedes. -->
+    <template id="report_financial_initial_balance" inherit_id="leih_account_v8.report_financial">
+
+        <xpath expr="//thead/tr/th[4]" position="before">
+            <th t-if="wizard.initial_balance" class="text-end">Initial Balance</th>
+        </xpath>
+
+        <xpath expr="//tbody/tr/td[4]" position="before">
+            <td t-if="wizard.initial_balance" class="text-end">
+                <span t-esc="row.get('initial_balance') or 0.0"
+                      t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+            </td>
+        </xpath>
+
+    </template>
+
+</odoo>

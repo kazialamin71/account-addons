@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_period_list" model="ir.ui.view">
+        <field name="name">account.period.list</field>
+        <field name="model">account.period</field>
+        <field name="arch" type="xml">
+            <list string="Periods" decoration-muted="state == 'done'"
+                  decoration-info="special">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="date_start"/>
+                <field name="date_stop"/>
+                <field name="fiscalyear_id"/>
+                <field name="special"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'draft'"
+                       decoration-muted="state == 'done'"/>
+                <button name="action_done" type="object" string="Close"
+                        icon="fa-lock" invisible="state == 'done'"
+                        groups="account.group_account_manager"/>
+                <button name="action_draft" type="object" string="Re-open"
+                        icon="fa-unlock" invisible="state == 'draft'"
+                        groups="account.group_account_manager"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_account_period_form" model="ir.ui.view">
+        <field name="name">account.period.form</field>
+        <field name="model">account.period</field>
+        <field name="arch" type="xml">
+            <form string="Period">
+                <header>
+                    <button name="action_done" type="object" string="Close Period"
+                            class="btn-primary" invisible="state == 'done'"
+                            groups="account.group_account_manager"/>
+                    <button name="action_draft" type="object" string="Re-open"
+                            invisible="state == 'draft'"
+                            groups="account.group_account_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. 03/2026"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="fiscalyear_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_stop"/>
+                            <field name="special"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_account_period_search" model="ir.ui.view">
+        <field name="name">account.period.search</field>
+        <field name="model">account.period</field>
+        <field name="arch" type="xml">
+            <search string="Periods">
+                <field name="name"/>
+                <field name="fiscalyear_id"/>
+                <filter name="open" string="Open" domain="[('state', '=', 'draft')]"/>
+                <filter name="closed" string="Closed" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter name="regular" string="Regular" domain="[('special', '=', False)]"/>
+                <filter name="opening" string="Opening/Closing" domain="[('special', '=', True)]"/>
+                <group>
+                    <filter name="group_fiscalyear" string="Fiscal Year"
+                            context="{'group_by': 'fiscalyear_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_account_period" model="ir.actions.act_window">
+        <field name="name">Periods</field>
+        <field name="res_model">account.period</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_account_period_search"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="om_account_chart_hierarchy.ChartOfAccounts">
+        <Layout className="'o_om_chart_of_accounts'" display="display">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-secondary" t-on-click="onClickExpandAll">Expand All</button>
+                <button class="btn btn-secondary" t-on-click="onClickCollapseAll">Collapse All</button>
+            </t>
+
+            <div class="o_om_coa_filters d-flex flex-wrap align-items-center gap-3 p-3">
+                <div class="d-flex align-items-center gap-2">
+                    <label class="mb-0 text-muted" for="om_coa_company">Company</label>
+                    <select id="om_coa_company" class="form-select form-select-sm"
+                            t-on-change="onChangeCompany">
+                        <t t-foreach="companies" t-as="company" t-key="company.id">
+                            <option t-att-value="company.id"
+                                    t-att-selected="company.id === state.companyId"
+                                    t-esc="company.name"/>
+                        </t>
+                    </select>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <label class="mb-0 text-muted" for="om_coa_fiscal_year">Fiscal Year</label>
+                    <select id="om_coa_fiscal_year" class="form-select form-select-sm"
+                            t-on-change="onChangeFiscalYear">
+                        <t t-foreach="availableFiscalYears" t-as="fiscalYear" t-key="fiscalYear.id">
+                            <option t-att-value="fiscalYear.id"
+                                    t-att-selected="fiscalYear.id === state.fiscalYearId"
+                                    t-esc="fiscalYear.name"/>
+                        </t>
+                    </select>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <label class="mb-0 text-muted" for="om_coa_target_move">Entries</label>
+                    <select id="om_coa_target_move" class="form-select form-select-sm"
+                            t-on-change="onChangeTargetMove">
+                        <option value="posted" t-att-selected="state.targetMove === 'posted'">Posted Entries</option>
+                        <option value="all" t-att-selected="state.targetMove === 'all'">All Entries</option>
+                    </select>
+                </div>
+
+                <span class="text-muted ms-auto">
+                    <t t-esc="state.dateFrom"/> &#8594; <t t-esc="state.dateTo"/>
+                </span>
+            </div>
+
+            <div t-if="!state.hasFiscalYear" class="alert alert-warning mx-3" role="alert">
+                No fiscal year is configured for this company. Showing the current calendar year instead
+                &#8212; add one under Accounting &#8594; Configuration &#8594; Fiscal Years.
+            </div>
+
+            <div class="o_om_coa_table_wrapper">
+                <table class="o_om_coa_table table table-sm">
+                    <thead>
+                        <tr>
+                            <th class="o_om_coa_code">Code</th>
+                            <th>Name</th>
+                            <th class="text-end">Debit</th>
+                            <th class="text-end">Credit</th>
+                            <th class="text-end">Balance</th>
+                            <th>Company Currency</th>
+                            <th>Internal Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="displayLines" t-as="row" t-key="row.id"
+                            t-att-class="row.is_view ? 'o_om_coa_view_row' : ''">
+                            <td class="o_om_coa_code">
+                                <span t-attf-style="padding-left: {{ row.level * 16 }}px"/>
+                                <button t-if="row.children.length" class="btn btn-link p-0 o_om_coa_caret"
+                                        t-on-click="() => this.toggleRow(row)">
+                                    <i t-attf-class="fa {{ state.unfolded[row.id] ? 'fa-caret-down' : 'fa-caret-right' }}"/>
+                                </button>
+                                <span t-else="" class="o_om_coa_caret_spacer"/>
+                                <span t-esc="row.code"/>
+                            </td>
+                            <td>
+                                <a href="#" t-on-click.prevent="() => this.onClickAccount(row)"
+                                   t-esc="row.name"/>
+                            </td>
+                            <td class="text-end" t-esc="formatAmount(row.debit)"/>
+                            <td class="text-end" t-esc="formatAmount(row.credit)"/>
+                            <td class="text-end" t-esc="formatAmount(row.balance)"/>
+                            <td t-esc="state.currencyName"/>
+                            <td t-esc="row.internal_type"/>
+                        </tr>
+                        <tr t-if="!displayLines.length">
+                            <td colspan="7" class="text-center text-muted p-4">
+                                No accounts to display for this company.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

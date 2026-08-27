@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_leih_cash_collection_account_user,leih.cash.collection.account user,model_leih_cash_collection_account,base.group_user,1,0,0,0
+access_leih_cash_collection_account_manager,leih.cash.collection.account manager,model_leih_cash_collection_account,account.group_account_manager,1,1,1,1

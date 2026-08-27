@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_tax_code_list" model="ir.ui.view">
+        <field name="name">account.tax.code.list</field>
+        <field name="model">account.tax.code</field>
+        <field name="arch" type="xml">
+            <list string="Tax Codes">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="sign"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_account_tax_code_form" model="ir.ui.view">
+        <field name="name">account.tax.code.form</field>
+        <field name="model">account.tax.code</field>
+        <field name="arch" type="xml">
+            <form string="Tax Code">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. VAT Collected"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="parent_id"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="sign"/>
+                            <field name="notprintable"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <field name="info" placeholder="What this tax case covers..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_account_tax_code_search" model="ir.ui.view">
+        <field name="name">account.tax.code.search</field>
+        <field name="model">account.tax.code</field>
+        <field name="arch" type="xml">
+            <search string="Tax Codes">
+                <field name="name"/>
+                <field name="code"/>
+                <filter name="roots" string="Root Codes" domain="[('parent_id', '=', False)]"/>
+                <group>
+                    <filter name="group_parent" string="Parent Code"
+                            context="{'group_by': 'parent_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_account_tax_code" model="ir.actions.act_window">
+        <field name="name">Tax Codes</field>
+        <field name="res_model">account.tax.code</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_account_tax_code_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Build your tax case tree</p>
+            <p>
+                Tax codes group the base and tax amounts that make up a statutory
+                tax return. Attach them to a tax under its Repartition tab, then
+                run the Taxes Report.
+            </p>
+        </field>
+    </record>
+
+    <!-- Expose the tax code on each repartition line. Both the invoice and the
+         refund tab of a tax render through this one list view. -->
+    <record id="view_tax_repartition_line_tax_code" model="ir.ui.view">
+        <field name="name">account.tax.repartition.line.list.tax.code</field>
+        <field name="model">account.tax.repartition.line</field>
+        <field name="inherit_id" ref="account.tax_repartition_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="tag_ids" position="after">
+                <field name="tax_code_id" optional="show"
+                       options="{'no_create_edit': True}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

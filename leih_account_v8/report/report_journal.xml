@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_journal">
+        <t t-call="web.html_container">
+            <t t-foreach="reports" t-as="report">
+                <t t-set="header" t-value="report['header']"/>
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h2 class="text-center">Journal Report</h2>
+                        <t t-call="leih_account_v8.report_filters_header"/>
+                        <t t-call="leih_account_v8.report_ledger_body"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

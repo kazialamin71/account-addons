@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Loaded last, once every action it points at exists. -->
+
+    <!-- Vouchers -->
+    <menuitem id="menu_action_voucher_receipt" name="Customer Receipts"
+              parent="menu_finance_vouchers" action="action_account_voucher_receipt"
+              sequence="10"/>
+    <menuitem id="menu_action_voucher_payment" name="Supplier Payments"
+              parent="menu_finance_vouchers" action="action_account_voucher_payment"
+              sequence="20"/>
+
+    <!-- Assets -->
+    <menuitem id="menu_action_asset_asset" name="Assets"
+              parent="menu_finance_assets" action="action_account_asset_asset"
+              sequence="10"/>
+    <menuitem id="menu_action_asset_depreciation_line" name="Depreciation Lines"
+              parent="menu_finance_assets" action="action_account_asset_depreciation_line"
+              sequence="20"/>
+    <menuitem id="menu_action_asset_category" name="Asset Categories"
+              parent="menu_finance_assets" action="action_account_asset_category"
+              sequence="30" groups="account.group_account_manager"/>
+
+    <!-- Budgets -->
+    <menuitem id="menu_action_crossovered_budget" name="Budgets"
+              parent="menu_finance_budgets" action="action_crossovered_budget"
+              sequence="10"/>
+    <menuitem id="menu_action_crossovered_budget_lines" name="Budget Analysis"
+              parent="menu_finance_budgets" action="action_crossovered_budget_lines"
+              sequence="20"/>
+    <menuitem id="menu_action_budget_post" name="Budgetary Positions"
+              parent="menu_finance_budgets" action="action_account_budget_post"
+              sequence="30" groups="account.group_account_manager"/>
+
+    <!-- Reports -->
+    <menuitem id="menu_report_general_ledger" name="General Ledger"
+              parent="menu_finance_reports" action="action_account_report_general_ledger"
+              sequence="10"/>
+    <menuitem id="menu_report_trial_balance" name="Trial Balance"
+              parent="menu_finance_reports" action="action_account_report_trial_balance"
+              sequence="20"/>
+    <menuitem id="menu_report_partner_ledger" name="Partner Ledger"
+              parent="menu_finance_reports" action="action_account_report_partner_ledger"
+              sequence="30"/>
+    <menuitem id="menu_report_aged_partner" name="Aged Partner Balance"
+              parent="menu_finance_reports" action="action_account_report_aged_partner"
+              sequence="40"/>
+    <menuitem id="menu_report_journal" name="Journals"
+              parent="menu_finance_reports" action="action_account_report_journal"
+              sequence="50"/>
+    <menuitem id="menu_report_book" name="Cash / Bank / Day Book"
+              parent="menu_finance_reports" action="action_account_report_book"
+              sequence="60"/>
+    <menuitem id="menu_report_financial" name="Balance Sheet / P&amp;L"
+              parent="menu_finance_reports" action="action_account_report_financial"
+              sequence="70"/>
+    <menuitem id="menu_report_tax" name="Taxes Report"
+              parent="menu_finance_reports" action="action_account_report_tax"
+              sequence="80"/>
+
+    <!-- Periods and closing -->
+    <menuitem id="menu_action_fiscalyear" name="Fiscal Years"
+              parent="menu_finance_periods" action="action_account_fiscalyear"
+              sequence="10"/>
+    <menuitem id="menu_action_period" name="Periods"
+              parent="menu_finance_periods" action="action_account_period"
+              sequence="20"/>
+    <menuitem id="menu_action_period_close" name="Close a Period"
+              parent="menu_finance_periods" action="action_account_period_close"
+              sequence="30"/>
+    <menuitem id="menu_action_fiscalyear_close_state" name="Close a Fiscal Year"
+              parent="menu_finance_periods" action="action_account_fiscalyear_close_state"
+              sequence="40"/>
+    <menuitem id="menu_action_fiscalyear_close" name="Generate Opening Entries"
+              parent="menu_finance_periods" action="action_account_fiscalyear_close"
+              sequence="50"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_action_tax_code" name="Tax Codes"
+              parent="menu_finance_config" action="action_account_tax_code"
+              sequence="10"/>
+    <menuitem id="menu_action_financial_report" name="Financial Report Structures"
+              parent="menu_finance_config" action="action_account_financial_report"
+              sequence="20"/>
+    <menuitem id="menu_action_report_account_type" name="Account Types"
+              parent="menu_finance_config" action="action_account_report_account_type"
+              sequence="30"/>
+
+</odoo>

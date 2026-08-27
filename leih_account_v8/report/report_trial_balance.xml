@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_trial_balance">
+        <t t-call="web.html_container">
+            <t t-foreach="reports" t-as="report">
+                <t t-set="header" t-value="report['header']"/>
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h2 class="text-center">Trial Balance</h2>
+                        <t t-call="leih_account_v8.report_filters_header"/>
+                        <table class="table table-sm o_main_table" style="font-size: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Account</th>
+                                    <th class="text-end">Initial Balance</th>
+                                    <th class="text-end">Debit</th>
+                                    <th class="text-end">Credit</th>
+                                    <th class="text-end">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="report['rows']" t-as="row">
+                                    <td><span t-esc="row.get('code')"/></td>
+                                    <td><span t-esc="row.get('name')"/></td>
+                                    <td class="text-end">
+                                        <span t-esc="row.get('initial_balance') or 0.0"
+                                              t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-esc="row.get('debit') or 0.0"
+                                              t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-esc="row.get('credit') or 0.0"
+                                              t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-esc="row.get('balance') or 0.0"
+                                              t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="border-top">
+                                    <th colspan="3" class="text-end">Total</th>
+                                    <th class="text-end">
+                                        <span t-esc="sum(r.get('debit') or 0.0 for r in report['rows'])"
+                                              t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </th>
+                                    <th class="text-end">
+                                        <span t-esc="sum(r.get('credit') or 0.0 for r in report['rows'])"
+                                              t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </th>
+                                    <th class="text-end">
+                                        <span t-esc="sum(r.get('balance') or 0.0 for r in report['rows'])"
+                                              t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

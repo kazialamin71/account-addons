@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="seq_leih_cash_collection" model="ir.sequence">
+        <field name="name">LEIS Cash Collection</field>
+        <field name="code">leih.cash.collection</field>
+        <field name="prefix">CC/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+</odoo>

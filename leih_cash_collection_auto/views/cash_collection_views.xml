@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_cash_collection_form_auto" model="ir.ui.view">
+        <field name="name">cash.collection.form.auto</field>
+        <field name="model">cash.collection</field>
+        <field name="inherit_id" ref="leih19.cash_collection_form_view"/>
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="payment_type_id"/>
+                <field name="auto_generated" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_cash_collection_list_auto" model="ir.ui.view">
+        <field name="name">cash.collection.list.auto</field>
+        <field name="model">cash.collection</field>
+        <field name="inherit_id" ref="leih19.cash_collection_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="payment_type_id" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Brings in receipts taken while a section had no configured accounts. -->
+    <record id="action_collect_pending_receipts" model="ir.actions.server">
+        <field name="name">Collect Pending Receipts</field>
+        <field name="model_id" ref="leih19.model_cash_collection"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_collect_pending_receipts()</field>
+    </record>
+
+    <menuitem id="menu_collect_pending_receipts"
+              name="Collect Pending Receipts"
+              parent="account.menu_finance_configuration"
+              action="action_collect_pending_receipts"
+              groups="account.group_account_manager"
+              sequence="91"/>
+
+</odoo>

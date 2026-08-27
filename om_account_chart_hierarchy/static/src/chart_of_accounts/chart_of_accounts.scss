@@ -1,0 +1,60 @@
+.o_om_chart_of_accounts {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+
+    .o_om_coa_filters {
+        border-bottom: 1px solid $border-color;
+        background-color: $o-view-background-color;
+    }
+
+    .o_om_coa_table_wrapper {
+        flex: 1 1 auto;
+        overflow: auto;
+    }
+
+    .o_om_coa_table {
+        margin-bottom: 0;
+
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: $o-gray-100;
+            border-bottom: 1px solid $border-color;
+            white-space: nowrap;
+        }
+
+        td {
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        // Parent nodes carry rolled-up totals, so they read as headings.
+        .o_om_coa_view_row {
+            font-weight: 500;
+            background-color: rgba($o-gray-200, .35);
+        }
+
+        .o_om_coa_code {
+            font-variant-numeric: tabular-nums;
+        }
+
+        // Amounts line up digit-for-digit down each column.
+        td.text-end {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .o_om_coa_caret {
+            width: 1rem;
+            vertical-align: baseline;
+        }
+
+        // Keeps leaf codes aligned with the codes of their expandable siblings.
+        .o_om_coa_caret_spacer {
+            display: inline-block;
+            width: 1rem;
+        }
+    }
+}

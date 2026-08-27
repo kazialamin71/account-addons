@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_budget_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2 class="text-center">Budget</h2>
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+                        <strong>Budget:</strong> <span t-field="doc.name"/><br/>
+                        <strong>Code:</strong> <span t-field="doc.code"/>
+                    </div>
+                    <div class="col-6">
+                        <strong>From:</strong> <span t-field="doc.date_from"/><br/>
+                        <strong>To:</strong> <span t-field="doc.date_to"/><br/>
+                        <strong>Responsible:</strong> <span t-field="doc.creating_user_id"/>
+                    </div>
+                </div>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th>Budgetary Position</th>
+                            <th>Analytic Account</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th class="text-end">Planned</th>
+                            <th class="text-end">Practical</th>
+                            <th class="text-end">Theoretical</th>
+                            <th class="text-end">Achievement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="doc.crossovered_budget_line" t-as="line">
+                            <td><span t-field="line.general_budget_id"/></td>
+                            <td><span t-field="line.analytic_account_id"/></td>
+                            <td><span t-field="line.date_from"/></td>
+                            <td><span t-field="line.date_to"/></td>
+                            <td class="text-end"><span t-field="line.planned_amount"/></td>
+                            <td class="text-end"><span t-field="line.practical_amount"/></td>
+                            <td class="text-end"><span t-field="line.theoritical_amount"/></td>
+                            <td class="text-end">
+                                <span t-esc="'%.2f %%' % ((line.percentage or 0.0) * 100)"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_budget">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="leih_account_v8.report_budget_document"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

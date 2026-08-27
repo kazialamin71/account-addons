@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================================ -->
+        <!-- Account types                                                -->
+        <!-- One record per account.account.account_type selection key,   -->
+        <!-- so financial report nodes can pick several of them at once.  -->
+        <!-- ============================================================ -->
+        <record id="data_account_type_receivable" model="account.report.account.type">
+            <field name="name">Receivable</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="internal_group">asset</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="data_account_type_liquidity" model="account.report.account.type">
+            <field name="name">Bank and Cash</field>
+            <field name="account_type">asset_cash</field>
+            <field name="internal_group">asset</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="data_account_type_current_assets" model="account.report.account.type">
+            <field name="name">Current Assets</field>
+            <field name="account_type">asset_current</field>
+            <field name="internal_group">asset</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="data_account_type_non_current_assets" model="account.report.account.type">
+            <field name="name">Non-current Assets</field>
+            <field name="account_type">asset_non_current</field>
+            <field name="internal_group">asset</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="data_account_type_prepayments" model="account.report.account.type">
+            <field name="name">Prepayments</field>
+            <field name="account_type">asset_prepayments</field>
+            <field name="internal_group">asset</field>
+            <field name="sequence">5</field>
+        </record>
+        <record id="data_account_type_fixed_assets" model="account.report.account.type">
+            <field name="name">Fixed Assets</field>
+            <field name="account_type">asset_fixed</field>
+            <field name="internal_group">asset</field>
+            <field name="sequence">6</field>
+        </record>
+        <record id="data_account_type_payable" model="account.report.account.type">
+            <field name="name">Payable</field>
+            <field name="account_type">liability_payable</field>
+            <field name="internal_group">liability</field>
+            <field name="sequence">7</field>
+        </record>
+        <record id="data_account_type_credit_card" model="account.report.account.type">
+            <field name="name">Credit Card</field>
+            <field name="account_type">liability_credit_card</field>
+            <field name="internal_group">liability</field>
+            <field name="sequence">8</field>
+        </record>
+        <record id="data_account_type_current_liabilities" model="account.report.account.type">
+            <field name="name">Current Liabilities</field>
+            <field name="account_type">liability_current</field>
+            <field name="internal_group">liability</field>
+            <field name="sequence">9</field>
+        </record>
+        <record id="data_account_type_non_current_liabilities" model="account.report.account.type">
+            <field name="name">Non-current Liabilities</field>
+            <field name="account_type">liability_non_current</field>
+            <field name="internal_group">liability</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="data_account_type_equity" model="account.report.account.type">
+            <field name="name">Equity</field>
+            <field name="account_type">equity</field>
+            <field name="internal_group">equity</field>
+            <field name="sequence">11</field>
+        </record>
+        <record id="data_account_type_unaffected" model="account.report.account.type">
+            <field name="name">Current Year Earnings</field>
+            <field name="account_type">equity_unaffected</field>
+            <field name="internal_group">equity</field>
+            <field name="sequence">12</field>
+        </record>
+        <record id="data_account_type_revenue" model="account.report.account.type">
+            <field name="name">Income</field>
+            <field name="account_type">income</field>
+            <field name="internal_group">income</field>
+            <field name="sequence">13</field>
+        </record>
+        <record id="data_account_type_other_income" model="account.report.account.type">
+            <field name="name">Other Income</field>
+            <field name="account_type">income_other</field>
+            <field name="internal_group">income</field>
+            <field name="sequence">14</field>
+        </record>
+        <record id="data_account_type_expenses" model="account.report.account.type">
+            <field name="name">Expenses</field>
+            <field name="account_type">expense</field>
+            <field name="internal_group">expense</field>
+            <field name="sequence">15</field>
+        </record>
+        <record id="data_account_type_other_expenses" model="account.report.account.type">
+            <field name="name">Other Expenses</field>
+            <field name="account_type">expense_other</field>
+            <field name="internal_group">expense</field>
+            <field name="sequence">16</field>
+        </record>
+        <record id="data_account_type_depreciation" model="account.report.account.type">
+            <field name="name">Depreciation</field>
+            <field name="account_type">expense_depreciation</field>
+            <field name="internal_group">expense</field>
+            <field name="sequence">17</field>
+        </record>
+        <record id="data_account_type_direct_costs" model="account.report.account.type">
+            <field name="name">Cost of Revenue</field>
+            <field name="account_type">expense_direct_cost</field>
+            <field name="internal_group">expense</field>
+            <field name="sequence">18</field>
+        </record>
+        <record id="data_account_type_off_balance" model="account.report.account.type">
+            <field name="name">Off-Balance Sheet</field>
+            <field name="account_type">off_balance</field>
+            <field name="internal_group">off</field>
+            <field name="sequence">19</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- Profit &amp; Loss                                            -->
+        <!-- Income and expenses both carry sign -1, so a credit balance  -->
+        <!-- (revenue) prints positive and a debit balance (cost) prints  -->
+        <!-- negative. The parent sum is then literally income - costs,   -->
+        <!-- i.e. the net result.                                         -->
+        <!-- ============================================================ -->
+        <record id="account_financial_report_profitandloss0" model="account.financial.report">
+            <field name="name">Profit and Loss</field>
+            <field name="sequence">10</field>
+            <field name="type">sum</field>
+            <field name="sign">1</field>
+            <field name="style_overwrite">1</field>
+            <field name="display_detail">detail_with_hierarchy</field>
+        </record>
+
+        <record id="account_financial_report_income0" model="account.financial.report">
+            <field name="name">Income</field>
+            <field name="parent_id" ref="account_financial_report_profitandloss0"/>
+            <field name="sequence">10</field>
+            <field name="type">account_type</field>
+            <field name="sign">-1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">detail_flat</field>
+            <field name="account_type_ids" eval="[(6, 0, [
+                ref('data_account_type_revenue'),
+                ref('data_account_type_other_income')])]"/>
+        </record>
+
+        <record id="account_financial_report_cost_of_revenue0" model="account.financial.report">
+            <field name="name">Less: Cost of Revenue</field>
+            <field name="parent_id" ref="account_financial_report_profitandloss0"/>
+            <field name="sequence">20</field>
+            <field name="type">account_type</field>
+            <field name="sign">-1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">detail_flat</field>
+            <field name="account_type_ids" eval="[(6, 0, [
+                ref('data_account_type_direct_costs')])]"/>
+        </record>
+
+        <record id="account_financial_report_expense0" model="account.financial.report">
+            <field name="name">Less: Operating Expenses</field>
+            <field name="parent_id" ref="account_financial_report_profitandloss0"/>
+            <field name="sequence">30</field>
+            <field name="type">account_type</field>
+            <field name="sign">-1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">detail_flat</field>
+            <field name="account_type_ids" eval="[(6, 0, [
+                ref('data_account_type_expenses'),
+                ref('data_account_type_other_expenses'),
+                ref('data_account_type_depreciation')])]"/>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- Balance Sheet                                                -->
+        <!-- Assets keep their natural debit sign; liabilities and equity -->
+        <!-- are reversed so both sections print positive and can be read -->
+        <!-- against each other.                                          -->
+        <!-- ============================================================ -->
+        <record id="account_financial_report_balancesheet0" model="account.financial.report">
+            <field name="name">Balance Sheet</field>
+            <field name="sequence">20</field>
+            <field name="type">sum</field>
+            <field name="sign">1</field>
+            <field name="style_overwrite">1</field>
+            <field name="display_detail">detail_with_hierarchy</field>
+        </record>
+
+        <record id="account_financial_report_assets0" model="account.financial.report">
+            <field name="name">ASSETS</field>
+            <field name="parent_id" ref="account_financial_report_balancesheet0"/>
+            <field name="sequence">10</field>
+            <field name="type">sum</field>
+            <field name="sign">1</field>
+            <field name="style_overwrite">1</field>
+            <field name="display_detail">detail_with_hierarchy</field>
+        </record>
+        <record id="account_financial_report_current_assets0" model="account.financial.report">
+            <field name="name">Current Assets</field>
+            <field name="parent_id" ref="account_financial_report_assets0"/>
+            <field name="sequence">10</field>
+            <field name="type">account_type</field>
+            <field name="sign">1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">detail_flat</field>
+            <field name="account_type_ids" eval="[(6, 0, [
+                ref('data_account_type_liquidity'),
+                ref('data_account_type_receivable'),
+                ref('data_account_type_current_assets'),
+                ref('data_account_type_prepayments')])]"/>
+        </record>
+        <record id="account_financial_report_fixed_assets0" model="account.financial.report">
+            <field name="name">Non-current Assets</field>
+            <field name="parent_id" ref="account_financial_report_assets0"/>
+            <field name="sequence">20</field>
+            <field name="type">account_type</field>
+            <field name="sign">1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">detail_flat</field>
+            <field name="account_type_ids" eval="[(6, 0, [
+                ref('data_account_type_fixed_assets'),
+                ref('data_account_type_non_current_assets')])]"/>
+        </record>
+
+        <record id="account_financial_report_liabilities0" model="account.financial.report">
+            <field name="name">LIABILITIES &amp; EQUITY</field>
+            <field name="parent_id" ref="account_financial_report_balancesheet0"/>
+            <field name="sequence">20</field>
+            <field name="type">sum</field>
+            <field name="sign">1</field>
+            <field name="style_overwrite">1</field>
+            <field name="display_detail">detail_with_hierarchy</field>
+        </record>
+        <record id="account_financial_report_current_liabilities0" model="account.financial.report">
+            <field name="name">Current Liabilities</field>
+            <field name="parent_id" ref="account_financial_report_liabilities0"/>
+            <field name="sequence">10</field>
+            <field name="type">account_type</field>
+            <field name="sign">-1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">detail_flat</field>
+            <field name="account_type_ids" eval="[(6, 0, [
+                ref('data_account_type_payable'),
+                ref('data_account_type_credit_card'),
+                ref('data_account_type_current_liabilities')])]"/>
+        </record>
+        <record id="account_financial_report_non_current_liabilities0" model="account.financial.report">
+            <field name="name">Non-current Liabilities</field>
+            <field name="parent_id" ref="account_financial_report_liabilities0"/>
+            <field name="sequence">20</field>
+            <field name="type">account_type</field>
+            <field name="sign">-1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">detail_flat</field>
+            <field name="account_type_ids" eval="[(6, 0, [
+                ref('data_account_type_non_current_liabilities')])]"/>
+        </record>
+        <record id="account_financial_report_equity0" model="account.financial.report">
+            <field name="name">Equity</field>
+            <field name="parent_id" ref="account_financial_report_liabilities0"/>
+            <field name="sequence">30</field>
+            <field name="type">account_type</field>
+            <field name="sign">-1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">detail_flat</field>
+            <field name="account_type_ids" eval="[(6, 0, [
+                ref('data_account_type_equity'),
+                ref('data_account_type_unaffected')])]"/>
+        </record>
+        <!-- Reversing the P&L node turns "costs minus income" back into the
+             profit that belongs on the equity side. -->
+        <record id="account_financial_report_year_result0" model="account.financial.report">
+            <field name="name">Profit for the Year</field>
+            <field name="parent_id" ref="account_financial_report_liabilities0"/>
+            <field name="sequence">40</field>
+            <field name="type">account_report</field>
+            <field name="account_report_id" ref="account_financial_report_profitandloss0"/>
+            <field name="sign">-1</field>
+            <field name="style_overwrite">2</field>
+            <field name="display_detail">no_detail</field>
+        </record>
+
+    </data>
+</odoo>

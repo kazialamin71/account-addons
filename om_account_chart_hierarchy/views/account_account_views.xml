@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_form_hierarchy" model="ir.ui.view">
+        <field name="name">account.account.form.hierarchy</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <field name="group_id" position="before">
+                <field name="parent_id"
+                       options="{'no_quick_create': True}"
+                       domain="[('id', '!=', id)]"/>
+                <field name="is_view" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_list_hierarchy" model="ir.ui.view">
+        <field name="name">account.account.list.hierarchy</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list"/>
+        <field name="arch" type="xml">
+            <field name="account_type" position="before">
+                <field name="parent_id" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_search_hierarchy" model="ir.ui.view">
+        <field name="name">account.account.search.hierarchy</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_search"/>
+        <field name="arch" type="xml">
+            <filter name="inactiveacc" position="after">
+                <separator/>
+                <filter name="filter_view_accounts" string="View Accounts"
+                        domain="[('is_view', '=', True)]"/>
+                <filter name="filter_postable_accounts" string="Postable Accounts"
+                        domain="[('is_view', '=', False)]"/>
+            </filter>
+            <filter name="accounttype" position="after">
+                <filter name="group_by_parent" string="Parent Account"
+                        context="{'group_by': 'parent_id'}"/>
+            </filter>
+        </field>
+    </record>
+
+</odoo>

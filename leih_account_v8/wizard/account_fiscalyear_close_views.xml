@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_fiscalyear_close_form" model="ir.ui.view">
+        <field name="name">account.fiscalyear.close.form</field>
+        <field name="model">account.fiscalyear.close</field>
+        <field name="arch" type="xml">
+            <form string="Generate Opening Entries">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        This restates every balance-sheet account at its closing balance
+                        in the new year's opening period, and carries the accumulated
+                        result to the retained-earnings account. The old fiscal year and
+                        all of its periods are closed afterwards.
+                    </div>
+                    <group>
+                        <group string="Close">
+                            <field name="fy_id"/>
+                        </group>
+                        <group string="Open">
+                            <field name="fy2_id"/>
+                            <field name="period_id"
+                                   domain="[('fiscalyear_id', '=', fy2_id)]"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="journal_id"/>
+                        <field name="retained_earnings_account_id"/>
+                        <field name="report_name"/>
+                        <field name="sure"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_compute" type="object"
+                            string="Generate Opening Entry"
+                            class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"
+                            data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_account_fiscalyear_close" model="ir.actions.act_window">
+        <field name="name">Generate Opening Entries</field>
+        <field name="res_model">account.fiscalyear.close</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_account_fiscalyear_close_state_form" model="ir.ui.view">
+        <field name="name">account.fiscalyear.close.state.form</field>
+        <field name="model">account.fiscalyear.close.state</field>
+        <field name="arch" type="xml">
+            <form string="Close a Fiscal Year">
+                <sheet>
+                    <div class="alert alert-warning" role="alert">
+                        Closing a fiscal year blocks any further posting into it and
+                        into all of its periods. No entry is generated.
+                    </div>
+                    <group>
+                        <field name="fy_id"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_close" type="object" string="Close Fiscal Year"
+                            class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"
+                            data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_account_fiscalyear_close_state" model="ir.actions.act_window">
+        <field name="name">Close a Fiscal Year</field>
+        <field name="res_model">account.fiscalyear.close.state</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

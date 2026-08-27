@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_voucher_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2 class="text-center">
+                    <span t-if="doc.voucher_type == 'receipt'">Receipt Voucher</span>
+                    <span t-else="">Payment Voucher</span>
+                </h2>
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+                        <strong>Voucher No:</strong> <span t-field="doc.number"/><br/>
+                        <strong>Partner:</strong> <span t-field="doc.partner_id"/><br/>
+                        <strong>Memo:</strong> <span t-field="doc.name"/>
+                    </div>
+                    <div class="col-6">
+                        <strong>Date:</strong> <span t-field="doc.date"/><br/>
+                        <strong>Method:</strong> <span t-field="doc.journal_id"/><br/>
+                        <strong>Reference:</strong> <span t-field="doc.reference"/>
+                    </div>
+                </div>
+
+                <table class="table table-sm o_main_table" t-if="doc.line_ids">
+                    <thead>
+                        <tr>
+                            <th>Open Item</th>
+                            <th>Document Date</th>
+                            <th>Due Date</th>
+                            <th class="text-end">Original</th>
+                            <th class="text-end">Open</th>
+                            <th class="text-end">Allocated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="doc.line_ids.filtered(lambda l: l.amount)" t-as="line">
+                            <td><span t-field="line.name"/></td>
+                            <td><span t-field="line.date_original"/></td>
+                            <td><span t-field="line.date_due"/></td>
+                            <td class="text-end"><span t-field="line.amount_original"/></td>
+                            <td class="text-end"><span t-field="line.amount_unreconciled"/></td>
+                            <td class="text-end"><span t-field="line.amount"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="row justify-content-end">
+                    <div class="col-4">
+                        <table class="table table-sm">
+                            <tr>
+                                <td><strong>Paid Amount</strong></td>
+                                <td class="text-end"><span t-field="doc.amount"/></td>
+                            </tr>
+                            <tr>
+                                <td>Allocated</td>
+                                <td class="text-end"><span t-field="doc.allocated"/></td>
+                            </tr>
+                            <tr>
+                                <td>Difference</td>
+                                <td class="text-end"><span t-field="doc.difference"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div t-if="doc.narration" class="mt32">
+                    <strong>Notes:</strong> <span t-field="doc.narration"/>
+                </div>
+
+                <div class="row mt64">
+                    <div class="col-4 text-center">___________________<br/>Prepared By</div>
+                    <div class="col-4 text-center">___________________<br/>Approved By</div>
+                    <div class="col-4 text-center">___________________<br/>Received By</div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_voucher">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="leih_account_v8.report_voucher_document"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

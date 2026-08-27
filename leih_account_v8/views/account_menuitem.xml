@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_finance_classic" name="Accounting (Classic)"
+              web_icon="account,static/description/icon.png"
+              groups="account.group_account_user" sequence="45"/>
+
+    <menuitem id="menu_finance_vouchers" name="Vouchers"
+              parent="menu_finance_classic" sequence="10"/>
+    <menuitem id="menu_finance_assets" name="Assets"
+              parent="menu_finance_classic" sequence="20"/>
+    <menuitem id="menu_finance_budgets" name="Budgets"
+              parent="menu_finance_classic" sequence="30"/>
+    <menuitem id="menu_finance_reports" name="Reports"
+              parent="menu_finance_classic" sequence="40"/>
+    <menuitem id="menu_finance_periods" name="Periods &amp; Closing"
+              parent="menu_finance_classic" sequence="50"
+              groups="account.group_account_manager"/>
+    <menuitem id="menu_finance_config" name="Configuration"
+              parent="menu_finance_classic" sequence="90"
+              groups="account.group_account_manager"/>
+
+</odoo>

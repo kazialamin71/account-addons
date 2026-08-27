@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================= Report account types ================= -->
+    <record id="view_account_report_account_type_list" model="ir.ui.view">
+        <field name="name">account.report.account.type.list</field>
+        <field name="model">account.report.account.type</field>
+        <field name="arch" type="xml">
+            <list string="Account Types" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="account_type"/>
+                <field name="internal_group"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_account_report_account_type" model="ir.actions.act_window">
+        <field name="name">Account Types</field>
+        <field name="res_model">account.report.account.type</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Account types used by financial reports</p>
+            <p>
+                One record per account type of the chart of accounts. Financial
+                report nodes pick from this list to say which balances they sum.
+            </p>
+        </field>
+    </record>
+
+    <!-- ================= Financial report tree ================= -->
+    <record id="view_account_financial_report_list" model="ir.ui.view">
+        <field name="name">account.financial.report.list</field>
+        <field name="model">account.financial.report</field>
+        <field name="arch" type="xml">
+            <list string="Financial Reports">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="parent_id"/>
+                <field name="sign"/>
+                <field name="level"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_account_financial_report_form" model="ir.ui.view">
+        <field name="name">account.financial.report.form</field>
+        <field name="model">account.financial.report</field>
+        <field name="arch" type="xml">
+            <form string="Financial Report">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Current Assets"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="parent_id"/>
+                            <field name="sequence"/>
+                            <field name="type"/>
+                        </group>
+                        <group>
+                            <field name="sign"/>
+                            <field name="display_detail"/>
+                            <field name="style_overwrite"/>
+                        </group>
+                    </group>
+                    <group string="Accounts" invisible="type != 'accounts'">
+                        <field name="account_ids" nolabel="1" widget="many2many_tags"/>
+                    </group>
+                    <group string="Account Types" invisible="type != 'account_type'">
+                        <field name="account_type_ids" nolabel="1" widget="many2many_tags"/>
+                    </group>
+                    <group string="Source Report" invisible="type != 'account_report'">
+                        <field name="account_report_id" nolabel="1"/>
+                    </group>
+                    <separator string="Children"/>
+                    <field name="children_ids" readonly="1">
+                        <list>
+                            <field name="sequence"/>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="sign"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_account_financial_report_search" model="ir.ui.view">
+        <field name="name">account.financial.report.search</field>
+        <field name="model">account.financial.report</field>
+        <field name="arch" type="xml">
+            <search string="Financial Reports">
+                <field name="name"/>
+                <filter name="roots" string="Root Reports" domain="[('parent_id', '=', False)]"/>
+                <group>
+                    <filter name="group_parent" string="Parent"
+                            context="{'group_by': 'parent_id'}"/>
+                    <filter name="group_type" string="Type" context="{'group_by': 'type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_account_financial_report" model="ir.actions.act_window">
+        <field name="name">Financial Report Structures</field>
+        <field name="res_model">account.financial.report</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_account_financial_report_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Shape your Balance Sheet and P&amp;L</p>
+            <p>
+                Each node either sums its children, or pulls balances from a list of
+                accounts, from account types, or from another report. Edit the tree
+                and the printed statements follow.
+            </p>
+        </field>
+    </record>
+
+</odoo>

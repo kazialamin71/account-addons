@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_leih_cash_collection_account_list" model="ir.ui.view">
+        <field name="name">leih.cash.collection.account.list</field>
+        <field name="model">leih.cash.collection.account</field>
+        <field name="arch" type="xml">
+            <list string="Cash Collection Accounts" editable="bottom">
+                <field name="type"/>
+                <field name="credit_account_id" options="{'no_create': True}"/>
+                <field name="default_payment_type_id" options="{'no_create': True}"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_leih_cash_collection_account_form" model="ir.ui.view">
+        <field name="name">leih.cash.collection.account.form</field>
+        <field name="model">leih.cash.collection.account</field>
+        <field name="arch" type="xml">
+            <form string="Cash Collection Account">
+                <sheet>
+                    <group>
+                        <field name="type"/>
+                        <field name="credit_account_id" options="{'no_create': True}"/>
+                        <field name="default_payment_type_id" options="{'no_create': True}"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_leih_cash_collection_account" model="ir.actions.act_window">
+        <field name="name">LEIS Cash Collection Accounts</field>
+        <field name="res_model">leih.cash.collection.account</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Configure a credit account per section</p>
+            <p>
+                Money received in a section is collected onto a sheet that posts one
+                journal entry. The debit account comes from the payment type used;
+                the credit account for each section is set here. Until a section is
+                configured its receipts stay uncollected.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_leih_cash_collection_account"
+              name="LEIS Cash Collection Accounts"
+              parent="account.menu_finance_configuration"
+              action="action_leih_cash_collection_account"
+              groups="account.group_account_manager"
+              sequence="90"/>
+
+</odoo>

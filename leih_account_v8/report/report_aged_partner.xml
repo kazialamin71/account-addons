@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_aged_partner">
+        <t t-call="web.html_container">
+            <t t-foreach="reports" t-as="report">
+                <t t-set="header" t-value="report['header']"/>
+                <t t-set="labels" t-value="report['labels']"/>
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h2 class="text-center">Aged Partner Balance</h2>
+                        <t t-call="leih_account_v8.report_filters_header"/>
+                        <table class="table table-sm o_main_table" style="font-size: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>Partner</th>
+                                    <th t-foreach="labels" t-as="bucket" class="text-end">
+                                        <span t-esc="bucket"/>
+                                    </th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="report['rows']" t-as="row">
+                                    <td><span t-esc="row.get('partner_name')"/></td>
+                                    <t t-foreach="['not_due', 'period0', 'period1', 'period2', 'period3', 'period4']"
+                                       t-as="key">
+                                        <td class="text-end">
+                                            <span t-esc="row.get(key) or 0.0"
+                                                  t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                        </td>
+                                    </t>
+                                    <td class="text-end">
+                                        <span t-esc="row.get('total') or 0.0"
+                                              t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="border-top">
+                                    <th class="text-end">Total</th>
+                                    <t t-foreach="['not_due', 'period0', 'period1', 'period2', 'period3', 'period4', 'total']"
+                                       t-as="key">
+                                        <th class="text-end">
+                                            <span t-esc="sum(r.get(key) or 0.0 for r in report['rows'])"
+                                                  t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                        </th>
+                                    </t>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
