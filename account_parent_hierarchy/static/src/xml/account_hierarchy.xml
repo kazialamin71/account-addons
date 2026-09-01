@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="account_parent_hierarchy.AccountHierarchyClient">
+        <div class="o_account_hierarchy h-100 d-flex flex-column">
+            <header class="o_hierarchy_header">
+                <div class="o_hierarchy_heading">
+                    <div class="o_hierarchy_icon" aria-hidden="true">
+                        <i class="fa fa-sitemap"/>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="o_hierarchy_eyebrow">Chart of Accounts</div>
+                        <h1 t-esc="state.company.name || 'Account Hierarchy'"/>
+                        <div class="o_hierarchy_meta">
+                            <span><i class="fa fa-calendar-o"/> <t t-esc="dateRangeLabel"/></span>
+                            <span><i class="fa fa-check-circle-o"/> <t t-esc="moveStateLabel"/></span>
+                            <span><i class="fa fa-filter"/> <t t-esc="displayLabel"/></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="o_hierarchy_actions">
+                    <button type="button" class="btn btn-light" t-on-click="onPrintPdf">
+                        <i class="fa fa-file-pdf-o"/>
+                        <span>PDF</span>
+                    </button>
+                    <button type="button" class="btn btn-primary" t-on-click="onExportXlsx">
+                        <i class="fa fa-file-excel-o"/>
+                        <span>Export XLSX</span>
+                    </button>
+                </div>
+            </header>
+
+            <section class="o_hierarchy_toolbar">
+                <div class="o_hierarchy_date_filters">
+                    <div class="o_hierarchy_field">
+                        <label for="hierarchy_date_from">From</label>
+                        <input id="hierarchy_date_from" type="date" class="form-control"
+                               t-att-value="state.dateFrom" t-on-change="onDateFromChange"/>
+                    </div>
+                    <div class="o_hierarchy_field">
+                        <label for="hierarchy_date_to">To</label>
+                        <input id="hierarchy_date_to" type="date" class="form-control"
+                               t-att-value="state.dateTo" t-on-change="onDateToChange"/>
+                    </div>
+                    <button type="button" class="btn btn-primary o_hierarchy_apply" t-on-click="onApplyDateFilter">
+                        <i class="fa fa-refresh"/> Apply
+                    </button>
+                    <button t-if="state.dateFrom || state.dateTo" type="button"
+                            class="btn btn-link text-muted" t-on-click="onClearDates">
+                        Clear
+                    </button>
+                </div>
+                <div class="o_hierarchy_table_tools">
+                    <div class="o_hierarchy_search">
+                        <i class="fa fa-search" aria-hidden="true"/>
+                        <input type="search" class="form-control" placeholder="Search account, code, or type…"
+                               t-att-value="state.query" t-on-input="onSearchInput"/>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Hierarchy controls">
+                        <button type="button" class="btn btn-outline-secondary" t-on-click="expandAll" title="Expand all">
+                            <i class="fa fa-expand"/> <span class="d-none d-xl-inline">Expand</span>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" t-on-click="collapseAll" title="Collapse all">
+                            <i class="fa fa-compress"/> <span class="d-none d-xl-inline">Collapse</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <main class="o_hierarchy_content flex-grow-1 overflow-auto">
+                <t t-if="state.loading">
+                    <div class="o_hierarchy_loading">
+                        <span class="o_hierarchy_spinner"/>
+                        <strong>Building account hierarchy…</strong>
+                        <small>Calculating opening and period balances</small>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div class="o_hierarchy_stats">
+                        <div class="o_hierarchy_stat">
+                            <span>Accounts</span>
+                            <strong t-esc="state.lines.length"/>
+                        </div>
+                        <div class="o_hierarchy_stat">
+                            <span>Visible rows</span>
+                            <strong t-esc="displayedLines.length"/>
+                        </div>
+                        <div class="o_hierarchy_stat o_hierarchy_stat_amount">
+                            <span>Closing balance</span>
+                            <strong t-att-class="totals.closing_balance &lt; 0 ? 'is-negative' : ''"
+                                    t-esc="formatMoney(totals.closing_balance)"/>
+                        </div>
+                    </div>
+
+                    <div t-if="displayedLines.length" class="o_hierarchy_card">
+                        <table class="table o_account_hierarchy_table">
+                            <thead>
+                                <tr>
+                                    <th class="o_hierarchy_account_column">Account</th>
+                                    <th>Code</th>
+                                    <th>Type</th>
+                                    <th class="text-end">Opening</th>
+                                    <th class="text-end">Debit</th>
+                                    <th class="text-end">Credit</th>
+                                    <th class="text-end">Closing</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="displayedLines" t-as="line" t-key="line.id">
+                                    <tr t-att-class="(line.is_parent ? 'o_hierarchy_parent_row ' : '') + (!line.active ? 'o_hierarchy_inactive_row' : '')">
+                                        <td class="o_hierarchy_account_cell"
+                                            t-att-style="'--hierarchy-indent: ' + (14 + line.level * 20) + 'px'">
+                                            <button t-if="line.is_parent" type="button"
+                                                    class="o_hierarchy_toggle"
+                                                    t-on-click="() => this.toggleFold(line)"
+                                                    t-att-aria-label="line.folded ? 'Expand ' + line.name : 'Collapse ' + line.name">
+                                                <i t-att-class="line.folded ? 'fa fa-angle-right' : 'fa fa-angle-down'"/>
+                                            </button>
+                                            <span t-else="" class="o_hierarchy_leaf_marker"/>
+                                            <button type="button" class="o_hierarchy_account_link"
+                                                    t-on-click="() => this.openAccountMoveLines(line)"
+                                                    title="Open journal items">
+                                                <span t-esc="line.name"/>
+                                                <i class="fa fa-external-link"/>
+                                            </button>
+                                            <span t-if="!line.active" class="o_hierarchy_inactive_badge">Archived</span>
+                                        </td>
+                                        <td><span class="o_hierarchy_code" t-esc="line.code"/></td>
+                                        <td>
+                                            <span t-att-class="'o_hierarchy_badge ' + getBadgeClass(line.account_type)"
+                                                  t-esc="line.account_type_display"/>
+                                        </td>
+                                        <td class="o_hierarchy_amount text-end" t-esc="formatMoney(line.initial_balance)"/>
+                                        <td class="o_hierarchy_amount text-end" t-esc="formatMoney(line.debit)"/>
+                                        <td class="o_hierarchy_amount text-end" t-esc="formatMoney(line.credit)"/>
+                                        <td class="o_hierarchy_amount o_hierarchy_closing text-end"
+                                            t-att-class="line.closing_balance &lt; 0 ? 'is-negative' : ''"
+                                            t-esc="formatMoney(line.closing_balance)"/>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">Grand total</td>
+                                    <td class="text-end" t-esc="formatMoney(totals.initial_balance)"/>
+                                    <td class="text-end" t-esc="formatMoney(totals.debit)"/>
+                                    <td class="text-end" t-esc="formatMoney(totals.credit)"/>
+                                    <td class="text-end" t-att-class="totals.closing_balance &lt; 0 ? 'is-negative' : ''"
+                                        t-esc="formatMoney(totals.closing_balance)"/>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div t-else="" class="o_hierarchy_empty">
+                        <div class="o_hierarchy_empty_icon"><i class="fa fa-search"/></div>
+                        <h2>No accounts found</h2>
+                        <p t-if="state.query">Try a different search term or clear the search.</p>
+                        <p t-else="">No accounts match the selected period and display options.</p>
+                    </div>
+                </t>
+            </main>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_account_form_parent" model="ir.ui.view">
+        <field name="name">account.account.form.inherit.parent.hierarchy</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_type']" position="after">
+                <field name="parent_id"
+                    domain="[('id', '!=', id), ('company_ids', 'parent_of', company_ids)]"
+                    options="{'no_quick_create': True}" />
+                <field name="hierarchy_level" readonly="1" groups="base.group_no_one" />
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="account_hierarchy" string="Hierarchy">
+                    <field name="child_ids" readonly="1" nolabel="1">
+                        <list create="0" delete="0">
+                            <field name="code" />
+                            <field name="name" />
+                            <field name="account_type" widget="account_type_selection" />
+                            <field name="active" widget="boolean_toggle" />
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,23 @@
+<odoo>
+    <record id="account_report_balance_view_inherit" model="ir.ui.view">
+        <field name="name">account.balance.report.form.inherit</field>
+        <field name="model">account.balance.report</field>
+        <field name="inherit_id" ref="accounting_pdf_reports.account_report_balance_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_account']" position="after">
+                <field name="enable_hierarchy"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_report_general_ledger_view_inherit" model="ir.ui.view">
+        <field name="name">account.report.general.ledger.form.inherit</field>
+        <field name="model">account.report.general.ledger</field>
+        <field name="inherit_id" ref="accounting_pdf_reports.account_report_general_ledger_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_account']" position="after">
+                <field name="enable_hierarchy"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,549 @@
+.o_account_hierarchy {
+    --aph-primary: #4f46a5;
+    --aph-primary-dark: #373072;
+    --aph-primary-soft: #f1efff;
+    --aph-surface: #ffffff;
+    --aph-canvas: #f5f6fa;
+    --aph-border: #e3e6ee;
+    --aph-text: #273142;
+    --aph-muted: #687386;
+    --aph-danger: #c9364b;
+    min-width: 0;
+    color: var(--aph-text);
+    background: var(--aph-canvas);
+}
+
+.o_account_hierarchy .o_hierarchy_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    color: #fff;
+    background:
+        radial-gradient(circle at 76% -30%, rgba(255, 255, 255, 0.18), transparent 37%),
+        linear-gradient(120deg, #292557 0%, var(--aph-primary) 62%, #675fc0 100%);
+    box-shadow: 0 5px 18px rgba(37, 33, 87, 0.18);
+    z-index: 3;
+}
+
+.o_account_hierarchy .o_hierarchy_heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.o_account_hierarchy .o_hierarchy_icon {
+    display: grid;
+    flex: 0 0 3.25rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 1.35rem;
+    backdrop-filter: blur(8px);
+}
+
+.o_account_hierarchy .o_hierarchy_eyebrow {
+    margin-bottom: 0.12rem;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.o_account_hierarchy .o_hierarchy_heading h1 {
+    overflow: hidden;
+    margin: 0;
+    color: #fff;
+    font-size: clamp(1.2rem, 2vw, 1.65rem);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.o_account_hierarchy .o_hierarchy_meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin-top: 0.35rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.78rem;
+}
+
+.o_account_hierarchy .o_hierarchy_meta i {
+    margin-right: 0.25rem;
+}
+
+.o_account_hierarchy .o_hierarchy_actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 0.55rem;
+}
+
+.o_account_hierarchy .o_hierarchy_actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.45rem;
+    padding-inline: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.65rem;
+    box-shadow: none;
+    font-weight: 600;
+}
+
+.o_account_hierarchy .o_hierarchy_actions .btn-light {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.o_account_hierarchy .o_hierarchy_actions .btn-light:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.o_account_hierarchy .o_hierarchy_actions .btn-primary {
+    color: var(--aph-primary-dark);
+    background: #fff;
+}
+
+.o_account_hierarchy .o_hierarchy_toolbar {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.5rem;
+    border-bottom: 1px solid var(--aph-border);
+    background: var(--aph-surface);
+    z-index: 2;
+}
+
+.o_account_hierarchy .o_hierarchy_date_filters,
+.o_account_hierarchy .o_hierarchy_table_tools {
+    display: flex;
+    align-items: end;
+    gap: 0.55rem;
+}
+
+.o_account_hierarchy .o_hierarchy_field label {
+    display: block;
+    margin: 0 0 0.25rem 0.15rem;
+    color: var(--aph-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.o_account_hierarchy .o_hierarchy_field .form-control {
+    width: 9.5rem;
+}
+
+.o_account_hierarchy .o_hierarchy_toolbar .form-control,
+.o_account_hierarchy .o_hierarchy_toolbar .btn {
+    min-height: 2.35rem;
+    border-radius: 0.55rem;
+}
+
+.o_account_hierarchy .o_hierarchy_toolbar .form-control {
+    border-color: var(--aph-border);
+    background-color: #fafbfc;
+}
+
+.o_account_hierarchy .o_hierarchy_toolbar .form-control:focus {
+    border-color: #8d86d6;
+    background: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(79, 70, 165, 0.12);
+}
+
+.o_account_hierarchy .o_hierarchy_toolbar .btn-primary {
+    border-color: var(--aph-primary);
+    background: var(--aph-primary);
+}
+
+.o_account_hierarchy .o_hierarchy_apply {
+    padding-inline: 0.9rem;
+}
+
+.o_account_hierarchy .o_hierarchy_search {
+    position: relative;
+}
+
+.o_account_hierarchy .o_hierarchy_search i {
+    position: absolute;
+    top: 50%;
+    left: 0.8rem;
+    color: #929aab;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.o_account_hierarchy .o_hierarchy_search .form-control {
+    width: clamp(13rem, 22vw, 20rem);
+    padding-left: 2.3rem;
+}
+
+.o_account_hierarchy .o_hierarchy_content {
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+.o_account_hierarchy .o_hierarchy_stats {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.o_account_hierarchy .o_hierarchy_stat {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--aph-border);
+    border-radius: 0.6rem;
+    background: rgba(255, 255, 255, 0.75);
+    color: var(--aph-muted);
+    font-size: 0.76rem;
+}
+
+.o_account_hierarchy .o_hierarchy_stat strong {
+    color: var(--aph-text);
+    font-size: 0.9rem;
+}
+
+.o_account_hierarchy .o_hierarchy_stat_amount {
+    margin-left: auto;
+}
+
+.o_account_hierarchy .o_hierarchy_card {
+    overflow: auto;
+    min-height: 8rem;
+    border: 1px solid var(--aph-border);
+    border-radius: 0.8rem;
+    background: var(--aph-surface);
+    box-shadow: 0 8px 24px rgba(39, 49, 66, 0.055);
+}
+
+.o_account_hierarchy .o_account_hierarchy_table {
+    min-width: 67rem;
+    margin: 0;
+    color: var(--aph-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table thead th {
+    padding: 0.75rem 0.85rem;
+    border: 0;
+    border-bottom: 1px solid #daddE7;
+    background: #f3f4f8;
+    color: #636d7e;
+    font-size: 0.7rem;
+    font-weight: 750;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.o_account_hierarchy .o_hierarchy_account_column {
+    width: 34%;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table tbody td {
+    height: 3rem;
+    padding: 0.55rem 0.85rem;
+    border-color: #edf0f4;
+    background: #fff;
+    vertical-align: middle;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table tbody tr:hover td {
+    background: #fafaff;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table tbody tr.o_hierarchy_parent_row td {
+    border-top-color: #dedcf1;
+    border-bottom-color: #e7e5f5;
+    background: var(--aph-primary-soft);
+    font-weight: 650;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table tbody tr.o_hierarchy_parent_row:hover td {
+    background: #eae7ff;
+}
+
+.o_account_hierarchy .o_hierarchy_account_cell {
+    padding-left: var(--hierarchy-indent) !important;
+    white-space: nowrap;
+}
+
+.o_account_hierarchy .o_hierarchy_toggle {
+    display: inline-grid;
+    width: 1.45rem;
+    height: 1.45rem;
+    margin-right: 0.2rem;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 0.35rem;
+    color: var(--aph-primary);
+    background: rgba(79, 70, 165, 0.09);
+}
+
+.o_account_hierarchy .o_hierarchy_toggle:hover {
+    color: #fff;
+    background: var(--aph-primary);
+}
+
+.o_account_hierarchy .o_hierarchy_leaf_marker {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin: 0 0.7rem 0.1rem 0.3rem;
+    border: 1px solid #aeb5c2;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.o_account_hierarchy .o_hierarchy_account_link {
+    max-width: calc(100% - 2.3rem);
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    text-align: left;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.o_account_hierarchy .o_hierarchy_account_link:hover {
+    color: var(--aph-primary);
+}
+
+.o_account_hierarchy .o_hierarchy_account_link .fa-external-link {
+    margin-left: 0.4rem;
+    color: #999fb0;
+    font-size: 0.65rem;
+    opacity: 0;
+    transition: opacity 120ms ease;
+}
+
+.o_account_hierarchy tr:hover .o_hierarchy_account_link .fa-external-link,
+.o_account_hierarchy .o_hierarchy_account_link:focus .fa-external-link {
+    opacity: 1;
+}
+
+.o_account_hierarchy .o_hierarchy_code {
+    display: inline-flex;
+    padding: 0.18rem 0.45rem;
+    border: 1px solid #e2e5ec;
+    border-radius: 0.35rem;
+    background: #f7f8fa;
+    color: #586273;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.75rem;
+}
+
+.o_account_hierarchy .o_hierarchy_badge {
+    display: inline-flex;
+    padding: 0.25rem 0.5rem;
+    border-radius: 2rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.o_account_hierarchy .o_hierarchy_badge_asset { color: #087f5b; background: #dcf8ee; }
+.o_account_hierarchy .o_hierarchy_badge_liability { color: #ad3445; background: #fde7eb; }
+.o_account_hierarchy .o_hierarchy_badge_equity { color: #4b46a1; background: #e9e7ff; }
+.o_account_hierarchy .o_hierarchy_badge_income { color: #086c8b; background: #ddf4fa; }
+.o_account_hierarchy .o_hierarchy_badge_expense { color: #996018; background: #fff1d4; }
+.o_account_hierarchy .o_hierarchy_badge_view { color: #5e6675; background: #e9ebef; }
+.o_account_hierarchy .o_hierarchy_badge_default { color: #5e6675; background: #eef0f4; }
+
+.o_account_hierarchy .o_hierarchy_amount {
+    color: #465164;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+.o_account_hierarchy .o_hierarchy_closing {
+    color: #24314a;
+    font-weight: 700;
+}
+
+.o_account_hierarchy .is-negative {
+    color: var(--aph-danger) !important;
+}
+
+.o_account_hierarchy .o_hierarchy_inactive_row td {
+    opacity: 0.7;
+}
+
+.o_account_hierarchy .o_hierarchy_inactive_badge {
+    margin-left: 0.45rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.25rem;
+    color: #777f8e;
+    background: #e7e9ed;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table tfoot {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table tfoot td {
+    padding: 0.8rem 0.85rem;
+    border: 0;
+    border-top: 2px solid #292557;
+    color: #fff;
+    background: #38346d;
+    font-size: 0.83rem;
+    font-weight: 750;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+.o_account_hierarchy .o_account_hierarchy_table tfoot td:first-child {
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.o_account_hierarchy .o_hierarchy_loading,
+.o_account_hierarchy .o_hierarchy_empty {
+    display: flex;
+    min-height: 21rem;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: var(--aph-muted);
+    text-align: center;
+}
+
+.o_account_hierarchy .o_hierarchy_loading strong {
+    margin-top: 0.85rem;
+    color: var(--aph-text);
+    font-size: 1rem;
+}
+
+.o_account_hierarchy .o_hierarchy_loading small {
+    margin-top: 0.25rem;
+}
+
+.o_account_hierarchy .o_hierarchy_spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 3px solid #dddaf5;
+    border-top-color: var(--aph-primary);
+    border-radius: 50%;
+    animation: aph-spin 700ms linear infinite;
+}
+
+@keyframes aph-spin {
+    to { transform: rotate(360deg); }
+}
+
+.o_account_hierarchy .o_hierarchy_empty_icon {
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+    place-items: center;
+    border-radius: 1.2rem;
+    color: var(--aph-primary);
+    background: var(--aph-primary-soft);
+    font-size: 1.4rem;
+}
+
+.o_account_hierarchy .o_hierarchy_empty h2 {
+    margin: 0 0 0.35rem;
+    color: var(--aph-text);
+    font-size: 1.15rem;
+}
+
+.o_account_hierarchy .o_hierarchy_empty p {
+    margin: 0;
+}
+
+@media (max-width: 991.98px) {
+    .o_account_hierarchy .o_hierarchy_header,
+    .o_account_hierarchy .o_hierarchy_toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .o_account_hierarchy .o_hierarchy_actions .btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .o_account_hierarchy .o_hierarchy_toolbar,
+    .o_account_hierarchy .o_hierarchy_content {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .o_account_hierarchy .o_hierarchy_date_filters,
+    .o_account_hierarchy .o_hierarchy_table_tools {
+        flex-wrap: wrap;
+    }
+
+    .o_account_hierarchy .o_hierarchy_table_tools {
+        justify-content: space-between;
+    }
+
+    .o_account_hierarchy .o_hierarchy_search {
+        flex: 1;
+    }
+
+    .o_account_hierarchy .o_hierarchy_search .form-control {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .o_account_hierarchy .o_hierarchy_header {
+        padding: 1rem;
+    }
+
+    .o_account_hierarchy .o_hierarchy_icon,
+    .o_account_hierarchy .o_hierarchy_meta span:nth-child(n + 2) {
+        display: none;
+    }
+
+    .o_account_hierarchy .o_hierarchy_date_filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .o_account_hierarchy .o_hierarchy_field .form-control {
+        width: 100%;
+    }
+
+    .o_account_hierarchy .o_hierarchy_stats {
+        flex-wrap: wrap;
+    }
+
+    .o_account_hierarchy .o_hierarchy_stat_amount {
+        width: 100%;
+        margin-left: 0;
+        justify-content: space-between;
+    }
+}

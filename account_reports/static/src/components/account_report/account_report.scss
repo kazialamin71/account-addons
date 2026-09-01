@@ -1,0 +1,506 @@
+.account_report {
+    --AccountReport-surface: #{$o-view-background-color};
+    --AccountReport-page-background: #f6f7fb;
+    --AccountReport-border: #{$o-gray-300};
+    --AccountReport-header-background: linear-gradient(135deg, rgba(113, 75, 103, .10), rgba(1, 126, 132, .07));
+    --AccountReport-section-background: rgba(113, 75, 103, .10);
+    --AccountReport-row-hover: rgba(1, 126, 132, .055);
+    --AccountReport-shadow: 0 12px 32px rgba(31, 35, 48, .08);
+    --AccountReport-toolbar-accent: #007e84;
+    --AccountReport-toolbar-accent-hover: #006a70;
+
+    .fit-content { width: fit-content }
+
+    > .o_control_panel {
+        position: relative;
+        z-index: 3;
+        border-bottom: 1px solid var(--AccountReport-border);
+        background: var(--AccountReport-surface);
+        box-shadow: none;
+
+        .btn, .dropdown-toggle {
+            border-radius: .15rem;
+        }
+
+        .o_control_panel_main_buttons {
+            .btn {
+                font-size: .8125rem;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+
+            .btn-primary {
+                color: #fff;
+                background: var(--AccountReport-toolbar-accent);
+                border-color: var(--AccountReport-toolbar-accent);
+
+                &:hover, &:focus {
+                    background: var(--AccountReport-toolbar-accent-hover);
+                    border-color: var(--AccountReport-toolbar-accent-hover);
+                }
+            }
+
+            .btn-link {
+                color: var(--AccountReport-toolbar-accent);
+                text-decoration: none;
+
+                &:hover, &:focus {
+                    color: var(--AccountReport-toolbar-accent-hover);
+                }
+            }
+        }
+
+        .o_control_panel_actions .btn-secondary {
+            color: var(--AccountReport-toolbar-accent);
+            background: transparent;
+            border-color: transparent;
+            box-shadow: none;
+            font-weight: 600;
+
+            &:hover, &:focus, &.show {
+                color: var(--AccountReport-toolbar-accent-hover);
+                background: rgba(1, 126, 132, .08);
+                border-color: transparent;
+            }
+        }
+    }
+
+    > .o_content {
+        background: var(--AccountReport-page-background);
+        padding: 1.25rem 1rem 2.5rem;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Control panel
+    //------------------------------------------------------------------------------------------------------------------
+    .o_control_panel_main_buttons {
+        .dropdown-item {
+            padding: 0;
+            .btn-link {
+                width: 100%;
+                text-align: left;
+                padding: 3px 20px;
+                border-radius: 0;
+            }
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Sections
+    //------------------------------------------------------------------------------------------------------------------
+    .section_selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin: 0 1rem 1rem;
+        justify-content: center;
+
+        .btn {
+            border: 0;
+            border-radius: 2rem;
+            padding: .45rem 1rem;
+            box-shadow: 0 2px 8px rgba(31, 35, 48, .08);
+            transition: transform .15s ease, box-shadow .15s ease;
+
+            &:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 5px 14px rgba(31, 35, 48, .12);
+            }
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Alert
+    //------------------------------------------------------------------------------------------------------------------
+    .warnings { margin-bottom: 1rem }
+    .alert {
+        margin-bottom: 0;
+        border: 0;
+        border-radius: .75rem;
+        box-shadow: 0 3px 12px rgba(31, 35, 48, .06);
+
+        a:hover { cursor:pointer }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // No content
+    //------------------------------------------------------------------------------------------------------------------
+    .o_view_nocontent {
+        z-index: 0;
+        max-width: 560px;
+        margin: 3rem auto;
+        padding: 2.5rem;
+        border: 1px dashed var(--AccountReport-border);
+        border-radius: 1rem;
+        background: var(--AccountReport-surface);
+        box-shadow: var(--AccountReport-shadow);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Table
+    //------------------------------------------------------------------------------------------------------------------
+    .account_report_table_container {
+        width: 100%;
+        max-width: 1440px;
+        margin: 2rem auto 0;
+        overflow-x: auto;
+    }
+
+    .table {
+        background-color: var(--AccountReport-surface);
+        border-collapse: separate; //!\\ Allows to add padding to the table
+        border-spacing: 0; //!\\ Removes default spacing between cells due to 'border-collapse: separate'
+        font-size: 0.8rem;
+        margin: 0 auto 24px;
+        padding: 1.25rem;
+        width: 100%;
+        min-width: 800px;
+        border: 1px solid var(--AccountReport-border);
+        border-radius: .85rem;
+        box-shadow: var(--AccountReport-shadow);
+        overflow: hidden;
+
+        > :not(caption) > * > * { padding: 0.25rem 0.75rem } //!\\ Override of bootstrap, keep selector
+
+        > thead {
+            > tr {
+                th:first-child {
+                    color: lightgrey;
+                }
+                th:not(:first-child) {
+                    text-align: center;
+                    vertical-align: middle;
+                }
+            }
+            > tr:not(:last-child) > th:not(:first-child) { border: 1px solid $o-gray-300 }
+        }
+
+        > tbody {
+            > tr {
+                &.unfolded { font-weight: bold }
+                > td {
+                    transition: background-color .12s ease, color .12s ease;
+                    a { cursor: pointer }
+                    .clickable { color: $o-enterprise-action-color }
+                    &.muted { color: var(--AccountReport-muted-data-color, $o-gray-300) }
+                    &:empty::after{ content: "\00a0" } //!\\ Prevents the collapse of empty table rows
+                }
+
+                &:not(.empty) > td { border-bottom: 1px solid var(--AccountReport-fine-line-separator-color, $o-gray-200) }
+                &.total { font-weight: bold }
+                &.o_bold_tr { font-weight: bold }
+
+                &.unfolded {
+                    > td { border-bottom: 1px solid $o-gray-300 }
+                    .btn_action { opacity: 1 }
+                    .btn_more { opacity: 1 }
+                }
+
+                &:hover {
+                    > td { --table-accent-bg: var(--AccountReport-row-hover) }
+                    &.empty > * { --table-accent-bg: transparent }
+                    .auditable {
+                        color: $o-enterprise-action-color !important;
+
+                        > a:hover { cursor: pointer }
+                    }
+                    .muted { color: $o-gray-800 }
+                    .btn_action, .btn_more {
+                        opacity: 1;
+                        color: $o-enterprise-action-color;
+                    }
+                    .btn_edit { color: $o-enterprise-action-color }
+                    .btn_dropdown { color: $o-enterprise-action-color }
+                    .btn_foldable { color: $o-enterprise-action-color }
+                    .btn_ellipsis { color: $o-enterprise-action-color }
+                    .btn_footnote_go { color: $o-enterprise-action-color }
+                    .btn_debug { color: $o-enterprise-action-color }
+                }
+            }
+        }
+    }
+
+    table.striped {
+        //!\\ Changes the background of every even column starting with the 3rd one
+        > thead > tr:not(:first-child) > th:nth-child(2n+3) { background: $o-gray-100 }
+        > tbody {
+            > tr:not(.line_level_0):not(.empty) > td:nth-child(2n+3) { background: $o-gray-100 }
+            > tr.line_level_0 > td:nth-child(2n+3) { background: $o-gray-300 }
+        }
+    }
+
+    thead.sticky {
+        background: var(--AccountReport-surface);
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        box-shadow: 0 2px 0 var(--AccountReport-border);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Line
+    //------------------------------------------------------------------------------------------------------------------
+    .line_name {
+        > .wrapper {
+            display: flex;
+
+            > .content {
+                display: flex;
+                sup { top: auto }
+            }
+        }
+
+        .name { white-space: nowrap }
+        &.unfoldable:hover { cursor: pointer }
+    }
+
+    .line_cell {
+        > .wrapper {
+            display: flex;
+            align-items: center;
+
+            > .content { display: flex }
+        }
+
+        &.date > .wrapper { justify-content: center }
+        &.numeric {
+            font-variant-numeric: tabular-nums;
+            > .wrapper { justify-content: flex-end }
+        }
+        .name { white-space: nowrap }
+    }
+
+    .line_level_0 {
+        color: $o-gray-700;
+        font-weight: bold;
+
+        > td {
+            border-bottom: 0 !important;
+            background: var(--AccountReport-section-background);
+        }
+        .muted { color: $o-gray-400 !important }
+        .btn_debug { color: $o-gray-400 }
+    }
+
+    @for $i from 2 through 16 {
+        .line_level_#{$i} {
+            $indentation: (($i + 1) * 8px) - 20px; // 20px are for the btn_foldable width
+
+            > td {
+                color: $o-gray-700;
+
+                &.line_name.unfoldable .wrapper { column-gap: calc(#{ $indentation }) }
+                &.line_name:not(.unfoldable) .wrapper { padding-left: $indentation }
+            }
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Link
+    //------------------------------------------------------------------------------------------------------------------
+    .link { color: $o-enterprise-action-color }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // buttons
+    //------------------------------------------------------------------------------------------------------------------
+    .btn_debug, .btn_dropdown, .btn_foldable, .btn_foldable_empty, .btn_sortable, .btn_ellipsis,
+    .btn_more, .btn_footnote_go, .btn_footnote_delete, .btn_action, .btn_edit {
+        border: none;
+        color: $o-gray-300;
+        font-size: inherit;
+        font-weight: normal;
+        padding: 0;
+        text-align: center;
+        width: 20px;
+        white-space: nowrap;
+
+        &:hover {
+            color: $o-enterprise-action-color !important;
+            cursor: pointer;
+        }
+    }
+
+    .btn_sortable > .fa-long-arrow-up, .btn_sortable > .fa-long-arrow-down { color: $o-enterprise-action-color }
+    .btn_foldable { color: $o-gray-500 }
+    .btn_foldable_empty:hover { cursor: default  }
+    .btn_ellipsis > i { vertical-align: bottom }
+    .btn_more { opacity: 1 }
+    .btn_footnote_go { color: $o-gray-600 }
+    .btn_footnote_delete {
+        margin-left: 4px;
+        vertical-align: baseline;
+    }
+    .btn_action {
+        opacity: 0;
+        background-color: $o-view-background-color;
+        color: $o-gray-600;
+        width: auto;
+        padding: 0 0.25rem;
+        margin: 0 0.25rem;
+        border: 1px solid $o-gray-300;
+        border-radius: 0.25rem;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Dropdown
+    //------------------------------------------------------------------------------------------------------------------
+    .dropdown { display: inline }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Footnote
+    //------------------------------------------------------------------------------------------------------------------
+    .footnotes {
+        border-top: 1px solid $o-gray-300;
+        font-size: 0.8rem;
+        padding: 24px 0;
+
+        > li {
+            line-height: 24px;
+            margin-left: 24px;
+            &:hover > button { color: $o-enterprise-action-color }
+        }
+    }
+
+    @media (max-width: 991.98px) {
+        > .o_content { padding-inline: .5rem }
+
+        .table {
+            min-width: 720px;
+            padding: .75rem;
+            border-radius: .65rem;
+
+            > :not(caption) > * > * { padding-inline: .55rem }
+        }
+    }
+
+    @media (min-width: 992px) {
+        > .o_control_panel .o_control_panel_main {
+            display: grid !important;
+            grid-template-columns: auto minmax(0, 1fr);
+            grid-template-rows: auto auto;
+            align-items: center !important;
+            row-gap: .5rem !important;
+        }
+
+        > .o_control_panel .o_control_panel_breadcrumbs {
+            display: contents !important;
+
+            > .o_breadcrumb {
+                grid-column: 1 / -1;
+                grid-row: 1;
+            }
+
+            > .o_control_panel_main_buttons {
+                grid-column: 1;
+                grid-row: 2;
+            }
+
+            > .me-auto {
+                display: none;
+            }
+        }
+
+        > .o_control_panel .o_control_panel_actions {
+            grid-column: 2;
+            grid-row: 2;
+            width: auto !important;
+            min-width: 0;
+            justify-content: flex-end !important;
+        }
+
+        > .o_control_panel .o_control_panel_navigation {
+            display: none !important;
+        }
+    }
+
+    @media print {
+        > .o_content { background: transparent; padding: 0 }
+        .table { border: 0; box-shadow: none }
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// Dialogs
+//----------------------------------------------------------------------------------------------------------------------
+.account_report_footnote_dialog {
+    textarea {
+        border: 1px solid $o-gray-300;
+        border-radius: 0.25rem;
+        height: 120px;
+        padding: .5rem;
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// Popovers
+//----------------------------------------------------------------------------------------------------------------------
+.account_report_popover_edit {
+    padding: .5rem 1rem;
+    box-sizing: content-box;
+
+    .edit_popover_boolean label { padding: 0 12px 0 4px }
+
+    .edit_popover_string {
+        width: 260px;
+        padding: 8px;
+        border-color: $o-gray-200;
+    }
+
+    .btn {
+        color: $o-white;
+        background-color: $o-enterprise-action-color;
+    }
+}
+
+.account_report_popover_ellipsis {
+    > p {
+        float: left;
+        margin: 1rem;
+        width: 360px;
+    }
+}
+
+.account_report_btn_clone {
+    margin: 1rem 1rem 0 0;
+    border: none;
+    color: $o-gray-300;
+    font-size: inherit;
+    font-weight: normal;
+    padding: 0;
+    text-align: center;
+    width: 20px;
+
+    &:hover {
+        color: $o-enterprise-action-color !important;
+        cursor: pointer;
+    }
+}
+
+.account_report_popover_debug {
+    width: 640px;
+
+    > .line_debug {
+        display: flex;
+        flex-direction: row;
+        padding: .25rem 1rem;
+
+        &:first-child { padding-top: 1rem }
+        &:last-child { padding-bottom: 1rem }
+
+        > span:first-child {
+            color: $o-gray-600;
+            max-width: 20%; //!\\ Not the same as 'width' because of 'display: flex'
+            min-width: 20%; //!\\ Not the same as 'width' because of 'display: flex'
+        }
+        > span:last-child {
+            color: $o-gray-800;
+            max-width: 80%; //!\\ Not the same as 'width' because of 'display: flex'
+            min-width: 80%; //!\\ Not the same as 'width' because of 'display: flex'
+        }
+
+        > code { color: $o-enterprise-color }
+    }
+
+    > .totals_separator { margin: .25rem 1rem }
+    > .engine_separator { margin: 1rem }
+}

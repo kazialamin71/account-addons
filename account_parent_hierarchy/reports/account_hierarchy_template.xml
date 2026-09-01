@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_hierarchy_pdf">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div style="border-left: 5px solid #4f46a5; padding: 4px 0 4px 14px; margin-bottom: 18px;">
+                        <h2 style="margin: 0; color: #292557; font-size: 24px;" t-esc="report_title"/>
+                        <div style="margin-top: 5px; color: #687386; font-size: 11px;">
+                            <span t-if="date_from and date_to">
+                                Period: <span t-esc="date_from"/> to <span t-esc="date_to"/>
+                            </span>
+                            <span t-elif="date_from">Period: From <span t-esc="date_from"/></span>
+                            <span t-elif="date_to">Period: Up to <span t-esc="date_to"/></span>
+                            <span t-else="">Period: All Time</span>
+                            <span style="margin: 0 8px; color: #c5c8d0;">|</span>
+                            <span t-esc="target_move_label"/>
+                            <span style="margin: 0 8px; color: #c5c8d0;">|</span>
+                            <span t-esc="company.currency_id.name"/>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm" style="width: 100%; border-collapse: collapse; font-size: 9px;">
+                        <thead style="display: table-header-group;">
+                            <tr style="color: #ffffff; background: #38346d;">
+                                <th style="width: 29%; padding: 7px 5px; border: 0; text-align: left;">Account</th>
+                                <th style="width: 10%; padding: 7px 5px; border: 0; text-align: left;">Code</th>
+                                <th style="width: 15%; padding: 7px 5px; border: 0; text-align: left;">Type</th>
+                                <th style="width: 11.5%; padding: 7px 5px; border: 0; text-align: right;">Opening</th>
+                                <th style="width: 11.5%; padding: 7px 5px; border: 0; text-align: right;">Debit</th>
+                                <th style="width: 11.5%; padding: 7px 5px; border: 0; text-align: right;">Credit</th>
+                                <th style="width: 11.5%; padding: 7px 5px; border: 0; text-align: right;">Closing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="lines" t-as="line">
+                                <tr t-att-style="'page-break-inside: avoid; background: #f1efff;' if line.get('is_parent') else 'page-break-inside: avoid;'">
+                                    <td t-att-style="'padding: 5px 4px 5px ' + str(5 + line['level'] * 12) + 'px; border-bottom: 1px solid #e7e9ef; font-weight: ' + ('700' if line.get('is_parent') else '400') + '; color: #273142;'">
+                                        <span t-if="line.get('is_parent')" style="color: #4f46a5; margin-right: 3px;">▸</span>
+                                        <span t-esc="line['name']"/>
+                                        <small t-if="not line.get('active', True)" style="color: #8a91a0;"> (Archived)</small>
+                                    </td>
+                                    <td style="padding: 5px 4px; border-bottom: 1px solid #e7e9ef; color: #586273;" t-esc="line['code']"/>
+                                    <td style="padding: 5px 4px; border-bottom: 1px solid #e7e9ef; color: #687386;" t-esc="line['account_type_display']"/>
+                                    <td style="padding: 5px 4px; border-bottom: 1px solid #e7e9ef; text-align: right; white-space: nowrap;">
+                                        <span t-esc="line['initial_balance']" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                    </td>
+                                    <td style="padding: 5px 4px; border-bottom: 1px solid #e7e9ef; text-align: right; white-space: nowrap;">
+                                        <span t-esc="line['debit']" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                    </td>
+                                    <td style="padding: 5px 4px; border-bottom: 1px solid #e7e9ef; text-align: right; white-space: nowrap;">
+                                        <span t-esc="line['credit']" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                    </td>
+                                    <td t-att-style="'padding: 5px 4px; border-bottom: 1px solid #e7e9ef; text-align: right; white-space: nowrap; font-weight: 700; color: ' + ('#c9364b' if line['closing_balance'] &lt; 0 else '#273142') + ';'">
+                                        <span t-esc="line['closing_balance']" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot style="display: table-row-group;">
+                            <tr style="color: #ffffff; background: #292557; font-weight: 700; page-break-inside: avoid;">
+                                <td colspan="3" style="padding: 8px 5px; border: 0; text-transform: uppercase; letter-spacing: 0.5px;">Grand Total</td>
+                                <td style="padding: 8px 5px; border: 0; text-align: right; white-space: nowrap;">
+                                    <span t-esc="totals['initial_balance']" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                </td>
+                                <td style="padding: 8px 5px; border: 0; text-align: right; white-space: nowrap;">
+                                    <span t-esc="totals['debit']" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                </td>
+                                <td style="padding: 8px 5px; border: 0; text-align: right; white-space: nowrap;">
+                                    <span t-esc="totals['credit']" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                </td>
+                                <td style="padding: 8px 5px; border: 0; text-align: right; white-space: nowrap;">
+                                    <span t-esc="totals['closing_balance']" t-options="{'widget': 'monetary', 'display_currency': company.currency_id}"/>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

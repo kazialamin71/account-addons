@@ -1,58 +1,18 @@
 import ast
-from odoo.osv import expression
-from odoo import api, models, fields
+from odoo import api, models
 
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     @api.model
-    def _where_calc(self, domain, active_test=True):
-        """Computes the WHERE clause needed to implement an OpenERP domain.
-
-        :param list domain: the domain to compute
-        :param bool active_test: whether the default filtering of records with
-            ``active`` field set to ``False`` should be applied.
-        :return: the query expressing the given domain as provided in domain
-        :rtype: Query
-        """
-        # if the object has an active field ('active', 'x_active'), filter out all
-        # inactive records unless they were explicitly asked for
-        if self._active_name and active_test and self.env.context.get('active_test', True):
-            # the item[0] trick below works for domain items and '&'/'|'/'!'
-            # operators too
-            if not any(item[0] == self._active_name for item in domain):
-                domain = [(self._active_name, '=', 1)] + domain
-
-        if domain:
-            return expression.expression(domain, self).query
-        else:
-            return Query(self.env, self._table, self._table_sql)
-
-    @api.model
-    def _apply_ir_rules(self, query, mode='read'):
-        """Add what's missing in ``query`` to implement all appropriate ir.rules
-          (using the ``model_name``'s rules or the current model's rules if ``model_name`` is None)
-
-        :param query: the current query object
-        """
-        if self.env.su:
-            return
-
-        # apply main rules on the object
-        Rule = self.env['ir.rule']
-        domain = Rule._compute_domain(self._name, mode)
-        if domain:
-            expression.expression(domain, self.sudo(), self._table, query)
-
-    @api.model
     def _query_get(self, domain=None):
         self.check_access('read')
 
         context = dict(self.env.context or {})
-        domain = domain or []
-        if not isinstance(domain, (list, tuple)):
+        if isinstance(domain, str):
             domain = ast.literal_eval(domain)
+        domain = list(domain or [])
 
         date_field = 'date'
         if context.get('aged_balance'):
@@ -106,9 +66,13 @@ class AccountMoveLine(models.Model):
             domain.append(('display_type', 'not in', ('line_section', 'line_note')))
             domain.append(('parent_state', '!=', 'cancel'))
 
-            query = self._where_calc(domain)
-            self._apply_ir_rules(query)
-            from_string, from_params = query.from_clause
-            where_string, where_params = query.where_clause
-            tables, where_clause, where_clause_params = from_string, where_string, from_params + where_params
+            # Odoo 19's _search() compiles fields.Domain and applies access
+            # rules itself, replacing the removed _where_calc/_apply_ir_rules
+            # helpers used by older Odoo versions.
+            query = self._search(domain)
+            from_clause = query.from_clause
+            query_where_clause = query.where_clause
+            tables = from_clause.code
+            where_clause = query_where_clause.code or 'TRUE'
+            where_clause_params = [*from_clause.params, *query_where_clause.params]
         return tables, where_clause, where_clause_params

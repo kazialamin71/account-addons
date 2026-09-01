@@ -1,0 +1,9 @@
+<odoo>
+    <record id="action_report_account_hierarchy" model="ir.actions.report">
+        <field name="name">Account Hierarchy</field>
+        <field name="model">account.account</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">account_parent_hierarchy.report_hierarchy_pdf</field>
+        <field name="report_file">account_parent_hierarchy.report_hierarchy_pdf</field>
+    </record>
+</odoo>

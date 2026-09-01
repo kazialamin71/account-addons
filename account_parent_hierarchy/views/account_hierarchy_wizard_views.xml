@@ -1,0 +1,53 @@
+<odoo>
+    <record id="view_account_hierarchy_wizard_form" model="ir.ui.view">
+        <field name="name">account.hierarchy.wizard.form</field>
+        <field name="model">account.hierarchy.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Account Hierarchy">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Account Hierarchy</h1>
+                        <p class="text-muted">Review opening, movement, and closing balances in a parent-child chart of accounts.</p>
+                    </div>
+                    <group>
+                        <group string="Report Scope">
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" />
+                            <field name="date_from" />
+                            <field name="date_to" />
+                            <field name="target_move" widget="radio" />
+                        </group>
+                        <group string="Display Options">
+                            <field name="hierarchy_by" invisible="1" />
+                            <field name="display_account" />
+                            <field name="include_zero" />
+                            <field name="show_unfolded" />
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Open Hierarchy"
+                        type="object"
+                        name="action_open_hierarchy"
+                        icon="fa-sitemap"
+                        class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_account_hierarchy_wizard" model="ir.actions.act_window">
+        <field name="name">Account Hierarchy</field>
+        <field name="res_model">account.hierarchy.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_hierarchy_wizard_form" />
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_account_hierarchy_root"
+        name="Account Hierarchy"
+        parent="account.menu_finance_reports"
+        action="action_account_hierarchy_wizard"
+        sequence="8"
+        groups="account.group_account_user,account.group_account_manager" />
+</odoo>
